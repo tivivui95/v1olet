@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import RNFetchBlob from 'react-native-fetch-blob'
-import base64 from 'react-native-base64'
 var RNFS = require('react-native-fs');
 const path = RNFS.DocumentDirectoryPath + '/hello.wav';
 import QRCode from 'react-native-qrcode-generator';
@@ -13,9 +11,11 @@ import AudioRecorderPlayer, {
   AudioSourceAndroidType,
 } from 'react-native-audio-recorder-player';
 
-import { View, Button, Text, AppRegistry,
+import { View, Text, AppRegistry,
   StyleSheet,
   TextInput } from 'react-native';
+
+  import { Appbar, Headline, Button, Divider } from 'react-native-paper';
 
 
 
@@ -255,17 +255,38 @@ export default class App extends Component {
     return (
       <View
         style={{
-          flex: 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-          alignContent: 'center',
-          alignSelf: 'center',
+          // flex: 1,
+          // flexDirection: 'row',
+          // alignItems: 'center',
+          // alignContent: 'center',
+          // alignSelf: 'center'
         }}>
+        <Appbar.Header>
+        {/* <Appbar.BackAction /> */}
+        <Appbar.Content title="AI-COVID" subtitle="Detect COVID-19 from sound" />
+        <Appbar.Action icon="magnify"  />
+        <Appbar.Action icon="dots-vertical"  />
+      </Appbar.Header>
+        <View style={{
+          flexDirection: 'column',
+          alignContent: 'center',
+          alignItems: 'center',
+          alignSelf: 'center',
+          marginTop: 48
+          }}>
         <View>
-          <Text>Record Audio</Text>
-          <Text>{this.state.recordTime}</Text>
+            <QRCode
+            value={this.state.text}
+            size={200}
+            bgColor={this.state.color}
+            fgColor='white'/>
+            <Text style={{alignSelf: 'center'}}>{this.state.ui}</Text>
+          </View>   
+          <Headline style={{alignSelf: 'center', margin: 2}}>Record Your Sound</Headline>
+          <Text style={{alignSelf: 'center', margin: 2}}>{this.state.recordTime}</Text>
           <Button
-            title="Record"
+            icon="record"
+            mode="outlined"
             // onPress={() => this.onStartRecord()}
             onPress={() => {
               return this.onStartRecord()
@@ -277,23 +298,17 @@ export default class App extends Component {
                 });
             }}
             onPress={onStartRecord}
-          />
-          <Button title="stop" onPress={() => this.onStopRecord()} />
-
-          <Text>
-            {this.state.playTime} / {this.state.duration}
-          </Text>
-
-          <Button title="send" onPress={() => this.sendAPI()} />
+          >Record</Button>
           <Text></Text>
-          <View>
-            <QRCode
-            value={this.state.text}
-            size={200}
-            bgColor={this.state.color}
-            fgColor='white'/>
-          </View>          
-          <Text>{this.state.ui}</Text>
+          <Button icon="stop" mode="outlined" onPress={() => this.onStopRecord()} >stop</Button>
+
+          <Text></Text>
+          <Divider />
+          <Text></Text>
+          <Button icon="send" mode="outlined" onPress={() => this.sendAPI()} >send</Button>
+          
+                 
+          
         </View>
       </View>
     );
